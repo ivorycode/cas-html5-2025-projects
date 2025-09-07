@@ -116,7 +116,7 @@ Wie funktioniert das "Einladen von Teilnehmern" -> kann man nach allen existiere
 
 Erscheint mir (zumindest vom Naming)  sehr "UI-Lastig" wäre es nicht besser mit den Domain-Begriffen (Event, Abstimmung ...) zu arbeiten?
 
-"answer" -> soltte aus meiner Sicht eher ein "questionformfield" referenzieren (ev. optional ein "questionoption") ... warum json / aggregation aller Antworten? Ist das effizient?
+"answer" -> solte aus meiner Sicht eher ein "questionformfield" referenzieren (ev. optional ein "questionoption") ... warum json / aggregation aller Antworten? Ist das effizient?
 
 Müssten die "Benachrichtigungen" nicht auch in der DB abgebildet sein?
 

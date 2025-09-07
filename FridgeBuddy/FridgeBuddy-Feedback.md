@@ -89,7 +89,7 @@ Gedanken:
 
 ### Scope: 
 
-passt grundsätzlic
+passt grundsätzlich
 
 - Mocking von "Profil registrieren" und "User anmelden"
   - => Wie habt ihr das Mocking vorgesehen?
