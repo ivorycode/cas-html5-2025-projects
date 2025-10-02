@@ -131,3 +131,19 @@ passt grundsätzlich
 => passt
 
 - Festhalten: Mobile oder auch Desktop?
+
+
+
+
+
+## Zwischenpräsentation
+
+Miro: https://click.miro.com/f/a/-_C6fp3NnKHOqhfJG92wxg~~/AAAHahA~/rXJO4U4MCuayFVwBIcsSCBVb7XIIBvaY71r2Y-f1OLfCaqV8Os4io1rboeELi619-86GlHRAtP6VCXqJbnUdsVlEYupWf2GFRrMGGXJoIHK0rS5rgw-WWO5nGxSWwJire7Jc8XsUcfD5Q8ZsjJOYewgGZAt3Xu6ip48gmCoAzRBm3cx7_XMp0D0tZxNONatXaPh3laX2t7pB7hNaRwWM2wWiLXew76lIQEjyz55ubFHVN0C_FBWCXbajmmfcInUJs2zYFcssLL36jnHOEGmoYR4efKcjXOkrSdprzRoOteko4hBYxBzHJgSEzIKF8DOpZ_P0_etgv239aWJ7RHJBF2t-us_RPxN_AKwobLz6IB-hoYgQfjjrkD3L72AF_9patqtviuv1lmRpe7661HVM1rGqZ1a0kfMi5uvSEx3JV_-v-gGVxhqUBL7nnKKWYxZIbmL3uUjFm9d7oVruN_c_zT5HyFJrfL0dfA6-zuiKh1aVr9X0C3CRzlWGfVoY73Tk
+
+
+
+Präsentation: https://bernerfachhochschule-my.sharepoint.com/:p:/r/personal/mulld7_bfh_ch/_layouts/15/Doc.aspx?sourcedoc=%7BAEBD76B5-0FAE-456D-AB37-C9C8F3723CA6%7D&file=fridgeBuddy.pptx&fromShare=true&action=edit&mobileredirect=true
+
+
+
+Doku: https://bernerfachhochschule-my.sharepoint.com/:w:/r/personal/mulld7_bfh_ch/_layouts/15/Doc.aspx?sourcedoc=%7B857E173D-CAA6-46E4-AB95-978A9A95ABCE%7D&file=fridgeBuddyDokumentation.docx&fromShare=true&action=default&mobileredirect=true
