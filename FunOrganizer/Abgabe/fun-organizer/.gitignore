@@ -1,0 +1,16 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+count.txt
+.env
+.env.local
+.nitro
+.tanstack
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen

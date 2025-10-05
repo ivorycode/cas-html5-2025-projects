@@ -1,0 +1,173 @@
+<header class="p-2">
+	<nav class="flex gap-1">
+		<a
+			class="nav-item"
+			matIconButton
+			[routerLink]="namedRouteConfig.home.path"
+			[attr.aria-label]="namedRouteConfig.home.title"
+			[routerLinkActive]="'menu-item-active'"
+			[routerLinkActiveOptions]="{ exact: true }"
+		>
+			<mat-icon>{{ namedRouteConfig.home.data!['matIcon'] }}</mat-icon>
+		</a>
+
+		<form class="flex" #form="ngForm">
+			<input
+				placeholder="Produkte suchen"
+				type="search"
+				class="px-2 rounded-full border-2 w-[150px]"
+				matInput
+				[formControl]="searchInputFormControl"
+			/>
+		</form>
+
+		<a
+			class="nav-item"
+			matIconButton
+			[routerLink]="namedRouteConfig.groceryForm.path"
+			[attr.aria-label]="namedRouteConfig.groceryForm.title"
+			[routerLinkActive]="'menu-item-active'"
+			[routerLinkActiveOptions]="{ exact: true }"
+		>
+			<mat-icon>{{ namedRouteConfig.groceryForm.data!['matIcon'] }}</mat-icon>
+		</a>
+		@if (isLoggedIn()) {
+			@let myGroceries = myGroceryService.getMyGroceriesResource;
+			@if (myGroceries.hasValue()) {
+				<a
+					class="nav-item"
+					matIconButton
+					[matBadge]="myGroceries.value().length"
+					matBadgePosition="above after"
+					matBadgeSize="medium"
+					[routerLink]="namedRouteConfig.myGroceries.path"
+					[attr.aria-label]="namedRouteConfig.myGroceries.title"
+					[routerLinkActive]="'menu-item-active'"
+					[routerLinkActiveOptions]="{ exact: true }"
+				>
+					<mat-icon>{{ namedRouteConfig.myGroceries.data!['matIcon'] }}</mat-icon>
+				</a>
+			}
+			@let reservedGroceries = reservationService.reservedGroceriesResource;
+			@if (reservedGroceries.hasValue()) {
+				<a
+					class="nav-item"
+					matIconButton
+					[matBadge]="reservedGroceries.value().length"
+					matBadgePosition="above after"
+					matBadgeSize="medium"
+					[routerLink]="namedRouteConfig.myReservations.path"
+					[attr.aria-label]="namedRouteConfig.myReservations.title"
+					[routerLinkActive]="'menu-item-active'"
+					[routerLinkActiveOptions]="{ exact: true }"
+				>
+					<mat-icon>
+						{{ namedRouteConfig.myReservations.data!['matIcon'] }}
+					</mat-icon>
+				</a>
+			}
+		}
+		@if (isLoggedIn()) {
+			<button
+				class="nav-item"
+				matIconButton
+				[matBadge]="username()"
+				matBadgePosition="above after"
+				matBadgeSize="medium"
+				[matMenuTriggerFor]="menu"
+				[attr.aria-label]="'Profilmenu für ' + username()"
+			>
+				<mat-icon>menu</mat-icon>
+			</button>
+		} @else {
+			<a
+				class="nav-item"
+				matIconButton
+				[routerLink]="namedRouteConfig.login.path"
+				[attr.aria-label]="namedRouteConfig.login.title"
+				[routerLinkActive]="'menu-item-active'"
+				[routerLinkActiveOptions]="{ exact: true }"
+			>
+				<mat-icon>{{ namedRouteConfig.login.data!['matIcon'] }}</mat-icon>
+			</a>
+		}
+	</nav>
+	<div class="info-line flex mt-2 gap-1">
+		<!-- Suchfeld + Filter nur anzeigen, wenn man auf der Startseite ist -->
+		@if (activatedRoute.firstChild?.snapshot?.title === namedRouteConfig.home.title) {
+			<button matIconButton (click)="clearAllFilters()" aria-label="Alle Filter löschen">
+				<mat-icon>close</mat-icon>
+			</button>
+
+			<mat-chip-listbox multiple aria-label="Essensgewohnheit" class="mr-1">
+				@for (eatingHabit of eatingHabits; track $index) {
+					<mat-chip-option
+						[selected]="selectedEatingHabits().includes(eatingHabit)"
+						(click)="toggleEatingHabits(eatingHabit)"
+					>
+						{{ eatingHabit }}
+					</mat-chip-option>
+				}
+			</mat-chip-listbox>
+
+			<mat-chip-listbox multiple aria-label="Label">
+				@for (label of labels; track $index) {
+					<mat-chip-option
+						[selected]="selectedLabels().includes(label)"
+						(click)="toggleLabels(label)"
+					>
+						{{ label }}
+					</mat-chip-option>
+				}
+			</mat-chip-listbox>
+		}
+	</div>
+</header>
+
+<mat-menu #menu="matMenu">
+	<ng-container
+		[ngTemplateOutlet]="menuItem"
+		[ngTemplateOutletContext]="{ $implicit: namedRouteConfig.home }"
+	></ng-container>
+
+	<ng-container
+		[ngTemplateOutlet]="menuItem"
+		[ngTemplateOutletContext]="{ $implicit: namedRouteConfig.groceryForm }"
+	></ng-container>
+	@if (isLoggedIn()) {
+		<ng-container
+			[ngTemplateOutlet]="menuItem"
+			[ngTemplateOutletContext]="{ $implicit: namedRouteConfig.myGroceries }"
+		></ng-container>
+
+		<ng-container
+			[ngTemplateOutlet]="menuItem"
+			[ngTemplateOutletContext]="{ $implicit: namedRouteConfig.myReservations }"
+		></ng-container>
+
+		<ng-container
+			[ngTemplateOutlet]="menuItem"
+			[ngTemplateOutletContext]="{ $implicit: namedRouteConfig.logout }"
+		></ng-container>
+	} @else {
+		<ng-container
+			[ngTemplateOutlet]="menuItem"
+			[ngTemplateOutletContext]="{ $implicit: namedRouteConfig.login }"
+		></ng-container>
+	}
+</mat-menu>
+
+<!--template for popup menu when logged in -->
+<ng-template #menuItem let-route>
+	<a
+		class="nav-item"
+		mat-menu-item
+		[routerLink]="route.path"
+		[routerLinkActive]="'menu-item-active'"
+		[routerLinkActiveOptions]="{ exact: true }"
+		[attr.aria-label]="route.title"
+	>
+		<mat-icon>{{ route.data!['matIcon'] }}</mat-icon>
+		{{ route.title }}
+	</a>
+</ng-template>

@@ -1,0 +1,69 @@
+# Image
+image:
+  name: node:24.3.0
+
+# Stages
+stages:
+  - install
+  - formater
+  - linter
+  - build
+  - deploy
+
+# Steps
+install:
+  stage: install
+  script:
+    - npm ci
+
+formater:
+  stage: formater
+  needs: ['install']
+  before_script:
+    - npm ci
+  script:
+    - npm run format
+
+linter:
+  stage: linter
+  needs: ['formater']
+  before_script:
+    - npm ci
+  script:
+    - npm run lint
+
+build:
+  stage: build
+  needs: ['linter']
+  before_script:
+    - npm ci
+  script:
+    - npm run buildProd
+  artifacts:
+    paths:
+      - dist
+
+deploy:
+  stage: deploy
+  needs: ['build']
+  before_script:
+    - git config --global user.email ${GITLAB_USER_EMAIL}
+    - git config --global user.name ${GITLAB_USER_NAME}
+    - git remote set-url origin https://oauth2:${AUTOMATION_ACCESS_TOKEN}@${CI_PROJECT_URL#https://}.git
+    - npm ci
+  script:
+    - npm run buildProd
+    - mkdir -p public
+    - mv _redirects public/_redirects
+    - mv dist/infra-improver/browser/* public/
+    - git tag "v$(date +%s)"
+    - git push origin --tags
+  pages: true
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main' # Deploy only when merged
+
+# Rules
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main'
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'

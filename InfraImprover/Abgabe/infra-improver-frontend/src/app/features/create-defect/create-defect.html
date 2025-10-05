@@ -1,0 +1,134 @@
+<!-- _____          __                       _____                                                     -->
+<!-- |_   _|        / _|                     |_   _|                                                   -->
+<!--  | |   _ __  | |_  _ __   __ _  ______   | |   _ __ ___   _ __   _ __   ___  __   __  ___  _ __   -->
+<!--  | |  | '_ \ |  _|| '__| / _` ||______|  | |  | '_ ` _ \ | '_ \ | '__| / _ \ \ \ / / / _ \| '__|  -->
+<!-- _| |_ | | | || |  | |   | (_| |         _| |_ | | | | | || |_) || |   | (_) | \ V / |  __/| |     -->
+<!-- \___/ |_| |_||_|  |_|    \__,_|         \___/ |_| |_| |_|| .__/ |_|    \___/   \_/   \___||_|     -->
+<!--                                                          | |                                      -->
+<!--                                                          |_|                                      -->
+<!-- Copyright @Beat Weisskopf, Sandrine Ngo-Dinh, Yves Jegge                                          -->
+<p-card header="Defekt melden" class="max-w-md mx-auto">
+  <form
+    [formGroup]="defectForm"
+    (ngSubmit)="onSubmitDefect()"
+    class="flex flex-col gap-1 md:gap-2 lg:gap-4 my-1 md:my-2 lg:my-4"
+    novalidate
+  >
+    <!-- Title -->
+    <p-iftalabel class="w-full">
+      <input
+        pInputText
+        id="title"
+        pTooltip="Fügen Sie einen Titel hinzu."
+        name="title"
+        autocomplete="off"
+        formControlName="title"
+        class="w-full"
+      />
+      <label for="title">Titel</label>
+    </p-iftalabel>
+    @if (validationFailed() && defectForm.controls["title"].invalid) {
+    <p-message severity="warn" variant="simple" size="small"> Ein Titel ist notwendig! </p-message>
+    }
+
+    <!-- List of Categories -->
+    <p-iftalabel class="w-full">
+      <p-select
+        id="category"
+        pTooltip="Wählen Sie eine Kategorie."
+        formControlName="category"
+        [options]="categoriesOptions()"
+        class="w-full"
+      />
+      <label for="category">Kategorie</label>
+    </p-iftalabel>
+    @if (validationFailed() && defectForm.controls["category"].invalid) {
+    <p-message severity="warn" variant="simple" size="small">
+      Eine Kategorie muss ausgewählt werden!
+    </p-message>
+    }
+
+    <!-- Description -->
+    <p-iftalabel class="w-full">
+      <textarea
+        pTextarea
+        style="resize: none"
+        id="description"
+        name="description"
+        pTooltip="Fügen Sie eine Beschreibung hinzu."
+        rows="4"
+        formControlName="description"
+        class="w-full"
+      >
+      </textarea>
+      <label for="description">Beschreibung</label>
+    </p-iftalabel>
+    @if (validationFailed() && defectForm.controls["description"].invalid) {
+    <p-message severity="warn" variant="simple" size="small">
+      Eine Beschreibung muss eingegeben werden!
+    </p-message>
+    }
+
+    <!-- Upload photo -->
+    <ii-photo-upload #photoUpload (photos)="onPhotoUpload($event)" />
+
+    @if (validationFailed() && photos().length===0) {
+    <p-message severity="warn" variant="simple" size="small">
+      Es muss mindestens ein Foto hochgeladen werden!
+    </p-message>
+    }
+
+    <!-- Location -->
+    <p-selectbutton
+      formControlName="locationChooser"
+      [options]="locationOptions()"
+      (onChange)="onLocationOptionChange($event)"
+      [multiple]="false"
+      styleClass="w-full flex justify-center flex-wrap"
+    >
+      <ng-template let-item pTemplate="item">
+        <div class="flex items-center justify-center w-full">
+          <i [class]="item.icon"></i>
+          <span>{{ item.name }}</span>
+        </div>
+      </ng-template>
+    </p-selectbutton>
+
+    @if (isSearchEnabled()) {
+
+    <ii-search-location
+      (placeChanged)="onPlaceChange($event)"
+      (placeReset)="onPlaceReset()"
+      [fluid]="true"
+      class="w-full"
+    />
+    }
+    <p-iftalabel class="w-full gap-1 md:gap-2 lg:gap-4 my-1 md:my-2 lg:my-4">
+      <input
+        pInputText
+        id="location"
+        name="location"
+        formControlName="locationLabel"
+        class="w-full"
+      />
+      <label for="location">Standort</label>
+    </p-iftalabel>
+
+    @if (validationFailed() && !location()) {
+    <p-message severity="warn" variant="simple" size="small">
+      Eine gültige Postion muss ermittelt werden!
+    </p-message>
+    }
+
+    <!-- Submit -->
+    <div class="w-full">
+      <p-button
+        label="Defekt melden"
+        type="submit"
+        icon="pi pi-plus-circle"
+        [loading]="isCreatingDefect()"
+        styleClass="w-full"
+      ></p-button>
+    </div>
+  </form>
+</p-card>

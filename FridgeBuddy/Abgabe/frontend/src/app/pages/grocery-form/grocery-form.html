@@ -1,0 +1,98 @@
+@let _editMode = editMode();
+@if (_editMode && groceryDetailsResource.isLoading()) {
+	<mat-spinner style="margin: 0 auto" mode="indeterminate"></mat-spinner>
+} @else {
+	<form
+		[formGroup]="form"
+		(ngSubmit)="submitForm()"
+		enctype="multipart/form-data"
+		class="max-w-xl p-4 grid gap-2"
+	>
+		<fieldset class="flex justify-stretch gap-x-3">
+			<mat-form-field class="w-1/5">
+				<mat-label>Menge</mat-label>
+				<input matInput type="number" formControlName="quantity" required />
+				@if (form.controls.quantity.hasError('required')) {
+					<mat-error>Pflichtfeld</mat-error>
+				}
+			</mat-form-field>
+			<mat-form-field class="w-4/5">
+				<mat-label>Produkt</mat-label>
+				<input matInput formControlName="product" maxlength="titleMaxLength" required />
+				<mat-hint align="end">
+					{{ form.controls.product.value.length || 0 }} / {{ titleMaxLength }}
+				</mat-hint>
+				@if (form.controls.product.hasError('required')) {
+					<mat-error>Pflichtfeld</mat-error>
+				}
+				@if (form.controls.product.hasError('maxlength')) {
+					<mat-error>Maximal 255 Zeichen</mat-error>
+				}
+			</mat-form-field>
+		</fieldset>
+
+		<mat-form-field>
+			<mat-label>Beschreibung</mat-label>
+			<textarea matInput formControlName="description" rows="3"></textarea>
+		</mat-form-field>
+
+		<mat-form-field>
+			<mat-label>Ablaufdatum</mat-label>
+			<input
+				matInput
+				[min]="expireDateMin()"
+				[matDatepicker]="picker"
+				formControlName="expireDate"
+				required
+			/>
+			<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+			<mat-datepicker #picker></mat-datepicker>
+			@if (form.controls.expireDate.hasError('required')) {
+				<mat-error>Pflichtfeld</mat-error>
+			}
+		</mat-form-field>
+
+		<fieldset>
+			<legend class="cdk-visually-hidden">Essensgewohnheit</legend>
+			<div class="flex justify-between mb-2">
+				<div>
+					<mat-checkbox formControlName="vegan">Vegan</mat-checkbox>
+					<mat-checkbox formControlName="vegetarian">Vegetarisch</mat-checkbox>
+				</div>
+				<div>
+					<mat-checkbox formControlName="ipSuisse">IP-Suisse</mat-checkbox>
+					<mat-checkbox formControlName="bio">Bio</mat-checkbox>
+				</div>
+			</div>
+		</fieldset>
+		<div class="flex gap-2">
+			@if (
+				_editMode && groceryDetailsResource.hasValue() && groceryDetailsResource.value();
+				as groceryDetails
+			) {
+				@if (form.controls.photo.value === null) {
+					<img
+						class="object-scale-down h-10 w-min"
+						alt="Produktbild"
+						id="productImg"
+						src="{{ groceryDetails.photo }}"
+					/>
+				}
+			}
+			<mat-card appearance="filled" class="mb-4 w-full">
+				<mat-file-upload
+					class="w-full"
+					[ngClass]="{ 'has-file-selected': form.controls.photo.value !== null }"
+					[labelText]="''"
+					[selectButtonText]="_editMode ? 'Foto ändern 📄' : 'Foto auswählen 📄'"
+					[allowMultipleFiles]="false"
+					[showUploadButton]="false"
+					[acceptedTypes]="'.png, .jpg, .jpeg, .gif'"
+					(selectedFilesChanged)="selectedFilesChanged($event)"
+				></mat-file-upload>
+			</mat-card>
+		</div>
+
+		<button matButton="filled" type="submit" [disabled]="form.invalid">Speichern</button>
+	</form>
+}

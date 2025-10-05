@@ -1,0 +1,32 @@
+@let _data = groceriesData();
+@if (_data.isLoading()) {
+	<mat-spinner style="margin: 0 auto" mode="indeterminate"></mat-spinner>
+} @else {
+	@if (_data.hasValue()) {
+		@let groceryApiData = _data.value();
+		<div class="grocery-cards-container">
+			@for (grocery of groceryApiData.results; track $index) {
+				<app-grocery-card
+					[grocery]="grocery"
+					(modificationSucceded)="afterGroceryModified($event)"
+				></app-grocery-card>
+			}
+		</div>
+
+		<mat-paginator
+			#paginator
+			class="demo-paginator"
+			(page)="handlePageEvent($event)"
+			[length]="groceryApiData.count"
+			[pageSize]="10"
+			[showFirstLastButtons]="false"
+			[pageSizeOptions]="[]"
+			[disabled]="false"
+			[hidePageSize]="true"
+			[pageIndex]="pageIndex()"
+			aria-label="Seite auswählen"
+		></mat-paginator>
+	} @else {
+		<app-card-info message="Es wurden leider keine Produkte gefunden."></app-card-info>
+	}
+}

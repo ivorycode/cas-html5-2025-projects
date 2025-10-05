@@ -1,0 +1,5 @@
+@reference "../../styles.css";
+
+.accordionTab {
+    @apply rounded-xl border px-4 shadow-sm text-xl bg-white;
+}

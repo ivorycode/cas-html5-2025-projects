@@ -1,0 +1,17 @@
+/*
+_____          __                       _____
+|_   _|        / _|                     |_   _|
+ | |   _ __  | |_  _ __   __ _  ______   | |   _ __ ___   _ __   _ __   ___  __   __  ___  _ __
+ | |  | '_ \ |  _|| '__| / _` ||______|  | |  | '_ ` _ \ | '_ \ | '__| / _ \ \ \ / / / _ \| '__|
+ | |_ | | | || |  | |   | (_| |         _| |_ | | | | | || |_) || |   | (_) | \ V / |  __/| |
+ \___/ |_| |_||_|  |_|    \__,_|         \___/ |_| |_| |_|| .__/ |_|    \___/   \_/   \___||_|
+                                                          | |
+                                                          |_|
+  Copyright @Beat Weisskopf, Sandrine Ngo-Dinh, Yves Jegge
+*/
+
+/*Defines Date Structure of Vote */
+export interface Vote {
+  defect_id: number | undefined;
+  user_id: string | undefined;
+}

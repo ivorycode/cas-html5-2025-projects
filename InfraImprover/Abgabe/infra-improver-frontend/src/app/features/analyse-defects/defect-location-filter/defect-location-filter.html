@@ -1,0 +1,32 @@
+<!-- _____          __                       _____                                                     -->
+<!-- |_   _|        / _|                     |_   _|                                                   -->
+<!--  | |   _ __  | |_  _ __   __ _  ______   | |   _ __ ___   _ __   _ __   ___  __   __  ___  _ __   -->
+<!--  | |  | '_ \ |  _|| '__| / _` ||______|  | |  | '_ ` _ \ | '_ \ | '__| / _ \ \ \ / / / _ \| '__|  -->
+<!-- _| |_ | | | || |  | |   | (_| |         _| |_ | | | | | || |_) || |   | (_) | \ V / |  __/| |     -->
+<!-- \___/ |_| |_||_|  |_|    \__,_|         \___/ |_| |_| |_|| .__/ |_|    \___/   \_/   \___||_|     -->
+<!--                                                          | |                                      -->
+<!--                                                          |_|                                      -->
+<!-- Copyright @Beat Weisskopf, Sandrine Ngo-Dinh, Yves Jegge                                          -->
+<div class="flex flex-col md:w-1/2 lg:w-1/6 gap-3 md:gap-4 lg:gap-5">
+  <ii-search-location
+    (placeChanged)="onPlaceChange($event)"
+    (placeReset)="onPlaceReset()"
+    [fluid]="true"
+    class="w-full block"
+  />
+
+  <div class="w-full gap-1 md:gap-2 lg:gap-4">
+    <p-slider
+      [(ngModel)]="radiusKm"
+      (onChange)="onDistanceChange($event)"
+      [step]="1"
+      [min]="1"
+      [max]="30"
+      id="slider"
+      class="w-full mb-2"
+    />
+    <label for="slider">
+      Radius: {{ radiusKm() }} km @if (place()?.label){ zu {{place()?.label}} }
+    </label>
+  </div>
+</div>

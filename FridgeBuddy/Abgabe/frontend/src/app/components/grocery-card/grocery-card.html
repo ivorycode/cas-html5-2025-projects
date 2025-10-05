@@ -1,0 +1,67 @@
+@let _grocery = grocery();
+
+<mat-card appearance="raised" class="card">
+	<mat-card-header (click)="handleClick(_grocery.id)">
+		<mat-card-title-group>
+			<mat-card-title>{{ _grocery.name }}</mat-card-title>
+			<mat-card-subtitle>
+				<div class="text-xs font-thin flex flex-col gap-1">
+					<p class="whitespace-nowrap">
+						Menge: <span class="tw-label">{{ _grocery.quantity }}</span>
+					</p>
+					<p class="whitespace-nowrap">
+						Ablaufdatum:
+						<span class="tw-label">{{ _grocery.expireDate | date }}</span>
+					</p>
+					@for (flagAsText of _grocery | groceryFlagsToStringArray; track $index) {
+						<p class="whitespace-nowrap">{{ flagAsText }}</p>
+					}
+				</div>
+			</mat-card-subtitle>
+			<img mat-card-sm-image alt="" src="{{ _grocery.photo }}" />
+		</mat-card-title-group>
+	</mat-card-header>
+	<mat-card-content (click)="handleClick(_grocery.id)">
+		<p class="pt-2">{{ _grocery.description }}</p>
+	</mat-card-content>
+
+	<mat-card-actions align="end" class="gap-1">
+		@if (hasAction(_grocery, 'unreserve')) {
+			<button
+				matIconButton="tonal"
+				aria-label="Reservierung löschen"
+				(click)="modifyReservation(_grocery.id, 'unreserve')"
+			>
+				<mat-icon>remove_shopping_cart</mat-icon>
+			</button>
+		}
+		@if (hasAction(_grocery, 'reserve')) {
+			<button
+				matIconButton="tonal"
+				aria-label="Reservieren"
+				(click)="modifyReservation(_grocery.id, 'reserve')"
+			>
+				<mat-icon>add_shopping_cart</mat-icon>
+			</button>
+		}
+		@if (hasAction(_grocery, 'confirm')) {
+			<button
+				matIconButton="tonal"
+				aria-label="Abholung bestätigen"
+				(click)="confirmPickup(_grocery.id)"
+			>
+				<mat-icon>check</mat-icon>
+			</button>
+		}
+		@if (hasAction(_grocery, 'update')) {
+			<button matIconButton="tonal" aria-label="Bearbeiten" (click)="editGrocery(_grocery.id)">
+				<mat-icon>edit</mat-icon>
+			</button>
+		}
+		@if (hasAction(_grocery, 'delete')) {
+			<button matIconButton="tonal" aria-label="Löschen" (click)="deleteGrocery(_grocery.id)">
+				<mat-icon>delete</mat-icon>
+			</button>
+		}
+	</mat-card-actions>
+</mat-card>

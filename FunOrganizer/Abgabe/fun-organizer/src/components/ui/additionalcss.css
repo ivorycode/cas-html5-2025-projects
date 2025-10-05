@@ -1,0 +1,8 @@
+/* Hier kommt zusätzlicher CSS für diverse Component Design Anpassungen hin. */
+
+.profile-option{
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+}

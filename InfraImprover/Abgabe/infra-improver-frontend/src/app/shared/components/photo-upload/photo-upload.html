@@ -1,0 +1,60 @@
+<!-- _____          __                       _____                                                     -->
+<!-- |_   _|        / _|                     |_   _|                                                   -->
+<!--  | |   _ __  | |_  _ __   __ _  ______   | |   _ __ ___   _ __   _ __   ___  __   __  ___  _ __   -->
+<!--  | |  | '_ \ |  _|| '__| / _` ||______|  | |  | '_ ` _ \ | '_ \ | '__| / _ \ \ \ / / / _ \| '__|  -->
+<!-- _| |_ | | | || |  | |   | (_| |         _| |_ | | | | | || |_) || |   | (_) | \ V / |  __/| |     -->
+<!-- \___/ |_| |_||_|  |_|    \__,_|         \___/ |_| |_| |_|| .__/ |_|    \___/   \_/   \___||_|     -->
+<!--                                                          | |                                      -->
+<!--                                                          |_|                                      -->
+<!-- Copyright @Beat Weisskopf, Sandrine Ngo-Dinh, Yves Jegge                                          -->
+
+<p-fileupload
+  #photoUpload
+  name="photo"
+  mode="advanced"
+  accept="image/*"
+  customUpload="true"
+  chooseLabel="Foto hinzufügen"
+  class="my-2 w-full"
+  [auto]="true"
+  [multiple]="true"
+  (uploadHandler)="onPhotoUpload($event)"
+>
+  <!-- Upload Header  -->
+  <ng-template #header let-files let-chooseCallback="chooseCallback">
+    <div class="flex justify-center w-full">
+      <p-button
+        (onClick)="onAddPhoto($event, chooseCallback)"
+        [rounded]="true"
+        [outlined]="true"
+        icon="pi pi-camera"
+        size="large"
+      />
+    </div>
+  </ng-template>
+  <!-- Upload Content  -->
+  <ng-template #content let-files let-removeFileCallback="removeFileCallback">
+    <div class="flex flex-col gap-1 md:gap-2 lg:gap-4 pt-1 md:pt-2 lg:pt-4">
+      @if (files?.length > 0) { @for (file of files; track file.id; let i = $index) {
+      <div class="flex items-center gap-1 p-1 rounded shadow-sm">
+        <img
+          [alt]="file.name"
+          [src]="file.objectURL"
+          class="w-24 h-12 rounded object-cover flex-shrink-0"
+        />
+        <div class="flex flex-col flex-grow min-w-0">
+          <div class="font-semibold truncate" title="{{ file.name }}">{{ file.name }}</div>
+          <div class="text-sm text-gray-500">{{ formatFileSize(file.size) }}</div>
+        </div>
+        <p-button
+          icon="pi pi-times"
+          (click)="onRemovePhoto($event, removeFileCallback, i)"
+          [outlined]="true"
+          [rounded]="true"
+          severity="danger"
+        />
+      </div>
+      } }
+    </div>
+  </ng-template>
+</p-fileupload>

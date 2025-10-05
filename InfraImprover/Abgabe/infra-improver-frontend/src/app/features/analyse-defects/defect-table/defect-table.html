@@ -1,0 +1,142 @@
+<!-- _____          __                       _____                                                     -->
+<!-- |_   _|        / _|                     |_   _|                                                   -->
+<!--  | |   _ __  | |_  _ __   __ _  ______   | |   _ __ ___   _ __   _ __   ___  __   __  ___  _ __   -->
+<!--  | |  | '_ \ |  _|| '__| / _` ||______|  | |  | '_ ` _ \ | '_ \ | '__| / _ \ \ \ / / / _ \| '__|  -->
+<!-- _| |_ | | | || |  | |   | (_| |         _| |_ | | | | | || |_) || |   | (_) | \ V / |  __/| |     -->
+<!-- \___/ |_| |_||_|  |_|    \__,_|         \___/ |_| |_| |_|| .__/ |_|    \___/   \_/   \___||_|     -->
+<!--                                                          | |                                      -->
+<!--                                                          |_|                                      -->
+<!-- Copyright @Beat Weisskopf, Sandrine Ngo-Dinh, Yves Jegge                                          -->
+<p-table
+  sortField="votes"
+  editMode="row"
+  dataKey="id"
+  [sortOrder]="-1"
+  [value]="defects()"
+  [paginator]="true"
+  [rows]="pageSize"
+  [tableStyle]="{ 'min-width': '50rem' }"
+  [rowsPerPageOptions]="[5, 10, 15]"
+  [totalRecords]="defects().length"
+>
+  <ng-template #header>
+    <tr>
+      <th pSortableColumn="numberOfVotes" style="width: 5%">
+        <div>
+          Stimmen
+          <p-sortIcon field="numberOfVotes" />
+        </div>
+      </th>
+      <th pSortableColumn="category" style="width: 10%">
+        <div>
+          Kategorie
+          <p-sortIcon field="category" />
+        </div>
+      </th>
+      <th style="width: 20%">
+        <p-columnFilter
+          type="text"
+          field="title"
+          filterOn="input"
+          placeholder="Suche nach Titel"
+        ></p-columnFilter>
+        Titel
+      </th>
+      <th pSortableColumn="state" style="width: 10%">
+        <div>
+          Status
+          <p-sortIcon field="state" />
+        </div>
+      </th>
+      <th style="width: 5%"></th>
+      <th style="width: 20%">Standort</th>
+      <th pSortableColumn="createdAt" style="width: 20%">
+        Erstellt
+        <p-sortIcon field="createdAt" />
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-defect let-editing="editing" let-ri="rowIndex">
+    <tr [pEditableRow]="defect">
+      <td>{{ defect?.numberOfVotes }}</td>
+      <td>{{ getDefectCategoryText(defect.category)}}</td>
+      <td>{{ defect.title }}</td>
+      <td>
+        <p-cellEditor>
+          <ng-template #input>
+            <p-select
+              [options]="statesOptions"
+              [(ngModel)]="defect.state"
+              placeholder="Status wählen"
+              appendTo="body"
+              [style]="{ width: '100%' }"
+            ></p-select>
+          </ng-template>
+          <ng-template #output>
+            <p-tag
+              [value]="getDefectStateText(defect.state)"
+              [severity]="getDefectStateSeverity(defect.state)"
+            />
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <!-- Edit/Save/Cancel Buttons -->
+      <td>
+        <div class="flex items-center justify-center gap-2">
+          @if (!editing) {
+          <p-button
+            pButton
+            pRipple
+            type="button"
+            pInitEditableRow
+            icon="pi pi-pencil"
+            (click)="onRowEditInit(defect)"
+            text
+            rounded
+            severity="secondary"
+          >
+          </p-button>
+          } @else {
+          <p-button
+            pButton
+            pRipple
+            type="button"
+            pSaveEditableRow
+            icon="pi pi-check"
+            (click)="onRowEditSave(defect)"
+            text
+            rounded
+            severity="secondary"
+          ></p-button>
+
+          <p-button
+            pButton
+            pRipple
+            type="button"
+            pCancelEditableRow
+            icon="pi pi-times"
+            (click)="onRowEditCancel(defect)"
+            text
+            rounded
+            severity="secondary"
+          ></p-button>
+          }
+        </div>
+      </td>
+      <td>
+        @if (locationLabels.has(defect.id)){
+        <a
+          [routerLink]="['/home']"
+          [queryParams]="{ lat: defect.location?.coordinates?.[0], long: defect.location?.coordinates?.[1] }"
+          class="hover:underline"
+        >
+          {{ locationLabels.get(defect.id) }}</a
+        >
+        } @else {
+        <p-progressSpinner [style]="{ width: '25px', height: '25px' }"></p-progressSpinner>
+        }
+      </td>
+      <td>{{ defect.createdAt | date: "short" }}</td>
+    </tr>
+  </ng-template>
+</p-table>

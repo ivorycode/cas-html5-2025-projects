@@ -1,0 +1,40 @@
+<!-- _____          __                       _____                                                     -->
+<!-- |_   _|        / _|                     |_   _|                                                   -->
+<!--  | |   _ __  | |_  _ __   __ _  ______   | |   _ __ ___   _ __   _ __   ___  __   __  ___  _ __   -->
+<!--  | |  | '_ \ |  _|| '__| / _` ||______|  | |  | '_ ` _ \ | '_ \ | '__| / _ \ \ \ / / / _ \| '__|  -->
+<!-- _| |_ | | | || |  | |   | (_| |         _| |_ | | | | | || |_) || |   | (_) | \ V / |  __/| |     -->
+<!-- \___/ |_| |_||_|  |_|    \__,_|         \___/ |_| |_| |_|| .__/ |_|    \___/   \_/   \___||_|     -->
+<!--                                                          | |                                      -->
+<!--                                                          |_|                                      -->
+<!-- Copyright @Beat Weisskopf, Sandrine Ngo-Dinh, Yves Jegge                                          -->
+<div
+  class="min-h-screen mx-auto gap-1 md:gap-2 lg:gap-4 space-y-1 md:space-y-2 space-y-1 lg:space-y-4"
+>
+  <!-- Charts container switches flex direction based on screen size -->
+  <div class="flex flex-col gap-1 md:gap-2 lg:gap-4">
+    <p-card header="Ortsfilter" class="w-full">
+      <ii-defect-location-filter
+        (filterChanged)="onFilterChange($event)"
+        (filterReset)="onFilterReset()"
+      />
+    </p-card>
+  </div>
+
+  <!-- Charts container switches flex direction based on screen size -->
+  <div class="flex flex-col md:flex-row m:w-1/3 gap-1 md:gap-2 lg:gap-4">
+    <p-card header="Kategorien" class="w-full max-h-1/2 md:max-w-1/3">
+      <ii-defect-category-chart-pie [defects]="defects()" [categories]="categories()" />
+    </p-card>
+
+    <p-card header="Status" class="w-full md:w-2/3">
+      <ii-defect-status-chart-line [defects]="defects()" [states]="states()" />
+    </p-card>
+  </div>
+
+  <!-- Table visible only on large screens -->
+  <div class="hidden lg:block">
+    <p-card header="Zusammenfassung" class="w-full">
+      <ii-defect-table [defects]="defects()" (editDefect)="onEditDefect($event)" />
+    </p-card>
+  </div>
+</div>

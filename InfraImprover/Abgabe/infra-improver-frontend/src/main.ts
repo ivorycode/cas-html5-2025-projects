@@ -1,0 +1,17 @@
+/*
+_____          __                       _____
+|_   _|        / _|                     |_   _|
+ | |   _ __  | |_  _ __   __ _  ______   | |   _ __ ___   _ __   _ __   ___  __   __  ___  _ __
+ | |  | '_ \ |  _|| '__| / _` ||______|  | |  | '_ ` _ \ | '_ \ | '__| / _ \ \ \ / / / _ \| '__|
+ | |_ | | | || |  | |   | (_| |         _| |_ | | | | | || |_) || |   | (_) | \ V / |  __/| |
+ \___/ |_| |_||_|  |_|    \__,_|         \___/ |_| |_| |_|| .__/ |_|    \___/   \_/   \___||_|
+                                                          | |
+                                                          |_|
+  Copyright @Beat Weisskopf, Sandrine Ngo-Dinh, Yves Jegge
+*/
+
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app/app.config';
+import { App } from './app/app';
+
+bootstrapApplication(App, appConfig).catch((err) => console.error(err));

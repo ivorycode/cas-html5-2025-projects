@@ -1,0 +1,10 @@
+.reserved {
+	color: red;
+	border-color: red;
+	background-color: transparent;
+}
+
+.open {
+	color: green;
+	border-color: green;
+}

@@ -1,0 +1,102 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+	.border-1 {
+		border-width: 1px;
+	}
+}
+
+html,
+body {
+	height: 100%;
+}
+body {
+	margin: 0;
+	font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+main {
+	margin: 0 5px;
+}
+
+main h1 {
+	@apply text-lg ml-4;
+}
+
+@layer base {
+	.tw-label {
+		@apply px-[3px] py-[2px] border-1 rounded-md font-normal;
+		background-color: var(--mat-sys-primary-container);
+	}
+}
+
+/* grid for grocery cards */
+.grocery-cards-container {
+	@apply grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-cols-1 gap-4;
+}
+
+/* make all grocery cards equal in height */
+app-grocery-card mat-card {
+	@apply h-full;
+}
+app-grocery-card mat-card mat-card-content {
+	@apply h-full;
+}
+
+/* snackbar custom styling */
+.mat-mdc-snack-bar-action .mdc-button__label {
+	@apply text-3xl;
+}
+
+.snackbar-error .mat-mdc-snackbar-surface {
+	background-color: var(--mat-sys-error) !important;
+}
+
+.snackbar-success .mat-mdc-snackbar-surface {
+	/* here we could find a better color from the material theme, that adapts to dark mode */
+	@apply bg-green-700 !important;
+}
+
+/* card-info and card-error styling */
+.card-error .mat-mdc-card-title,
+.card-info .mat-mdc-card-title {
+	@apply pl-2 text-sm;
+}
+
+.card-error {
+	background-color: var(--mat-sys-error) !important;
+	color: var(--mat-sys-on-error) !important;
+}
+
+/* file upload styling */
+mat-file-upload button[color="primary"] {
+	@apply w-full;
+}
+
+/* hide "Bitte wählen" button if a file was selected */
+mat-file-upload.has-file-selected button[color="primary"] {
+	display: none;
+}
+
+/* header nav item colors and hover colors */
+.nav-item mat-icon {
+	color: gray;
+}
+
+.nav-item.menu-item-active mat-icon,
+.nav-item:hover mat-icon {
+	color: var(--mat-icon-color, inherit);
+}
+
+/* removes checkmark in front of chips (search filter toggles), so that the UI doesn't shift */
+.mdc-evolution-chip__action[aria-selected="true"]
+.mdc-evolution-chip__graphic.mat-mdc-chip-graphic {
+	display: none !important;
+}
+
+.mdc-evolution-chip__action[aria-selected="true"] {
+	padding-left: 12px !important;
+}

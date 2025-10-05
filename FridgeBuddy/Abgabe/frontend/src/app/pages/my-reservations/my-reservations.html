@@ -1,0 +1,24 @@
+@let _data = reservationService.reservedGroceriesResource;
+@if (_data.isLoading()) {
+	<mat-spinner style="margin: 0 auto" mode="indeterminate"></mat-spinner>
+}
+@if (_data.error()) {
+	<app-card-error
+		message="Es ist ein Fehler beim Laden der Reservationen aufgetreten. Wir kümmern uns
+      darum."
+	></app-card-error>
+}
+@if (_data.hasValue()) {
+	@if (!_data.value().length) {
+		<app-card-info message="Es sind keine Reservationen vorhanden."></app-card-info>
+	} @else {
+		<div class="grocery-cards-container">
+			@for (grocery of _data.value(); track $index) {
+				<app-grocery-card
+					[grocery]="grocery"
+					(modificationSucceded)="afterGroceryModified($event)"
+				></app-grocery-card>
+			}
+		</div>
+	}
+}

@@ -1,0 +1,6 @@
+.card mat-card-header,
+.card mat-card-content {
+	&:hover {
+		cursor: pointer;
+	}
+}

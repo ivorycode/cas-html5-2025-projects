@@ -1,0 +1,7 @@
+<app-header></app-header>
+<main>
+	<h1 [class.sr-only]="!titleService.shouldDisplayTitle()">
+		{{ titleService.getTitle() }}
+	</h1>
+	<router-outlet />
+</main>

@@ -1,0 +1,75 @@
+<!-- _____          __                       _____                                                     -->
+<!-- |_   _|        / _|                     |_   _|                                                   -->
+<!--  | |   _ __  | |_  _ __   __ _  ______   | |   _ __ ___   _ __   _ __   ___  __   __  ___  _ __   -->
+<!--  | |  | '_ \ |  _|| '__| / _` ||______|  | |  | '_ ` _ \ | '_ \ | '__| / _ \ \ \ / / / _ \| '__|  -->
+<!-- _| |_ | | | || |  | |   | (_| |         _| |_ | | | | | || |_) || |   | (_) | \ V / |  __/| |     -->
+<!-- \___/ |_| |_||_|  |_|    \__,_|         \___/ |_| |_| |_|| .__/ |_|    \___/   \_/   \___||_|     -->
+<!--                                                          | |                                      -->
+<!--                                                          |_|                                      -->
+<!-- Copyright @Beat Weisskopf, Sandrine Ngo-Dinh, Yves Jegge                                          -->
+
+<p-drawer
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="false"
+  (onHide)="onCloseClicked($event)"
+  [position]="drawerPosition()"
+  [styleClass]="drawerStyleClass() + ' bg-white/10 backdrop-blur-[2px]'"
+  [style]="{ top: '132px', height: 'calc(100vh - 132px)' }"
+>
+  <!-- Street Map Drawer Header-->
+  <ng-template #header>
+    <div class="flex flex-col w-full">
+      <!-- Left drawer buttons -->
+      <div class="flex justify-between items-center w-full mb-2">
+        <div class="flex gap-2">
+          @if(isEditable()) {
+          <p-button
+            (click)="onDefectEditClicked($event)"
+            [rounded]="true"
+            [text]="true"
+            [disabled]="!isEditable()"
+            icon="pi pi-pencil"
+            severity="contrast"
+            title="Edit"
+          />
+          <p-button
+            (click)="onDefectDeleteClicked($event)"
+            [rounded]="true"
+            [text]="true"
+            icon="pi pi-trash"
+            severity="contrast"
+            title="Delete"
+            [disabled]="!isEditable()"
+          />
+          }
+        </div>
+
+        <!-- Right drawer buttons -->
+        <div class="flex gap-2">
+          @if(isInEditMode()) {
+          <p-button
+            (click)="onDefectSaveClicked($event)"
+            [disabled]="!isInEditMode() || isDone()"
+            [text]="true"
+            [rounded]="true"
+            icon="pi pi-save"
+            severity="contrast"
+          />
+          }
+          <p-button
+            (click)="onCloseClicked($event)"
+            [rounded]="true"
+            [text]="true"
+            icon="pi pi-times"
+            severity="contrast"
+          />
+          <p-confirmdialog></p-confirmdialog>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Street Map Drawer Content-->
+  <ng-content />
+</p-drawer>

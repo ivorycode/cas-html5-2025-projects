@@ -1,0 +1,73 @@
+@let buddyData = buddyDetailsResource;
+@let groceryData = groceryDetailsResource;
+
+@if (groceryData.isLoading()) {
+	<mat-spinner style="margin: 0 auto" mode="indeterminate"></mat-spinner>
+} @else {
+	@if (groceryData.hasValue() && groceryData.value(); as g) {
+		@if (buddyData.isLoading()) {
+			<mat-spinner style="margin: 0 auto" mode="indeterminate"></mat-spinner>
+		} @else {
+			@if (buddyData.hasValue() && buddyData.value(); as b) {
+				@if (g.status === 'reserved') {
+					<mat-card class="m-2 p-2 flex flex-col rounded-xl shadow-md border">
+						<div class="flex flex-col justify-center items-center">
+							<h1 class="text-xl font-bold mt-5 mb-5">Kontaktiere jetzt deinen Fridge-Buddy</h1>
+							<img
+								src="{{ b.profileImage }}"
+								alt="{{ b.username }}"
+								class="w-24 h-24 rounded-full object-cover border mb-5 mx-auto"
+							/>
+
+							<div class="mb-5 mt-5">
+								<p>{{ b.username }}</p>
+								<p class="text-sm text-gray-500 mt-2">📞 {{ b.phone }}</p>
+							</div>
+						</div>
+					</mat-card>
+				}
+			}
+		}
+		<mat-card class="m-2 p-2 flex flex-col rounded-xl shadow-md border">
+			<div class="flex flex-row justify-between items-start mb-4">
+				<h1 class="text-2xl font-semibold ml-0">{{ g.name }}</h1>
+				<div class="ml-auto flex flex-col items-end">
+					@for (flagAsText of g | groceryFlagsToStringArray; track $index) {
+						<p class="ml-2">{{ flagAsText }}</p>
+					}
+				</div>
+			</div>
+			<div class="flex flex-row mb-2">
+				<span class="font-bold"> Anzahl: </span>
+				<span class="ml-2">{{ g.quantity }} </span>
+			</div>
+			<div class="flex flex-row mb-2">
+				<span class="font-bold"> Beschreibung: </span>
+				<span class="ml-2">{{ g.description }} </span>
+			</div>
+			<div class="flex flex-row items-center justify-between mb-2">
+				<div class="flex items-center gap-2">
+					<span class="font-bold">Ablaufdatum:</span>
+					<span>{{ g.expireDate | date }}</span>
+				</div>
+				<span
+					class="px-3 py-1 border-2 rounded font-bold text-center max-w-[30%]"
+					[ngClass]="g.status"
+				>
+					{{ translatedStatus() }}
+				</span>
+			</div>
+
+			<div class="flex justify-center mb-10 mt-8">
+				<img
+					alt="{{ g.name }}"
+					class="w-full h-28 object-contain shadow-md rounded-lg"
+					src="{{ g.photo }}"
+				/>
+			</div>
+			@if (g.status === 'open') {
+				<button matButton="filled" (click)="handleReserve()">Lebensmittel reservieren</button>
+			}
+		</mat-card>
+	}
+}

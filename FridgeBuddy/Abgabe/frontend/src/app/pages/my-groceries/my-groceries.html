@@ -1,0 +1,25 @@
+@let _data = myGroceryService.getMyGroceriesResource; @let _dataSorted = myGroceriesSorted();
+@if (_data.isLoading()) {
+	<mat-spinner style="margin: 0 auto" mode="indeterminate"></mat-spinner>
+} @else {
+	@if (_data.error()) {
+		<app-card-error
+			message="Es ist ein Fehler beim Laden der eigenen Produkte aufgetreten. Wir kümmern uns
+      darum."
+		></app-card-error>
+	}
+	@if (_dataSorted) {
+		@if (_dataSorted.length > 0) {
+			<div class="grocery-cards-container">
+				@for (grocery of _dataSorted; track $index) {
+					<app-grocery-card
+						[grocery]="grocery"
+						(modificationSucceded)="afterGroceryModified($event)"
+					></app-grocery-card>
+				}
+			</div>
+		} @else {
+			<app-card-info message="Es sind keine eigenen Produkte vorhanden."></app-card-info>
+		}
+	}
+}
